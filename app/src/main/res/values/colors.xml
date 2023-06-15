@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="primary">#FF00BF8E</color>
+
+    <color name="category_item">#FFFFE1BB</color>
+    <color name="category_item_divider">#FFFFC77E</color>
+
+    <color name="contact_list_divider">#FF89CDBB</color>
+
+    <color name="drawer_background">#FF141414</color>
+    <color name="drawer_items_divider">#FF0B4E3D</color>
+</resources>
