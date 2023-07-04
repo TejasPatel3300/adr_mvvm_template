@@ -14,7 +14,7 @@
 
         <variable
             name="onItemClickListener"
-            type="com.example.silvertouchpracticaltest.ui.adapter.DrawerAdapter.OnItemClickListener" />
+            type="com.example.mvvmtemplate.ui.adapter.DrawerAdapter.OnItemClickListener" />
 
     </data>
 

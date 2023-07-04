@@ -5,11 +5,11 @@
     <data>
         <variable
             name="category"
-            type="com.example.silvertouchpracticaltest.database.entity.Category" />
+            type="com.example.mvvmtemplate.database.entity.Category" />
 
         <variable
             name="onItemActionListener"
-            type="com.example.silvertouchpracticaltest.ui.adapter.CategoriesAdapter.OnItemActionListener" />
+            type="com.example.mvvmtemplate.ui.adapter.CategoriesAdapter.OnItemActionListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

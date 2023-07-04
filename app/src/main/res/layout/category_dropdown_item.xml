@@ -5,7 +5,7 @@
     <data>
         <variable
             name="category"
-            type="com.example.silvertouchpracticaltest.database.entity.Category" />
+            type="com.example.mvvmtemplate.database.entity.Category" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

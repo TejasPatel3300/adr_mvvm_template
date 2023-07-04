@@ -5,11 +5,11 @@
     <data>
         <variable
             name="contact"
-            type="com.example.silvertouchpracticaltest.database.entity.Contact" />
+            type="com.example.mvvmtemplate.database.entity.Contact" />
 
         <variable
             name="onItemActionListener"
-            type="com.example.silvertouchpracticaltest.ui.adapter.ContactListAdapter.OnItemActionListener" />
+            type="com.example.mvvmtemplate.ui.adapter.ContactListAdapter.OnItemActionListener" />
     </data>
 
 
