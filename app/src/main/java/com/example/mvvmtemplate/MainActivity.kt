@@ -3,19 +3,25 @@ package com.example.mvvmtemplate
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmtemplate.constants.DRAWER_MENU_ITEMS
+import com.example.mvvmtemplate.database.AppDatabase
 import com.example.mvvmtemplate.databinding.ActivityMainBinding
+import com.example.mvvmtemplate.repository.ContactRepository
 import com.example.mvvmtemplate.ui.AddContactFragment
 import com.example.mvvmtemplate.ui.CategoriesFragment
 import com.example.mvvmtemplate.ui.ContactListFragment
 import com.example.mvvmtemplate.ui.adapter.DrawerAdapter
 import com.example.mvvmtemplate.utils.hideKeyboard
+import com.example.mvvmtemplate.viewmodel.ContactViewModel
+import com.example.mvvmtemplate.viewmodel.ContactsViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,8 +29,16 @@ class MainActivity : AppCompatActivity() {
     private var drawerLayout:DrawerLayout? = null
     private var drawerMenu: RecyclerView? = null
     private var drawerAdapter: DrawerAdapter? = null
+    private var searchView: SearchView? = null
 
     private var hideMenu: Boolean = true
+
+    private val contactViewModel: ContactViewModel by lazy {
+        ViewModelProvider(
+            this,
+            ContactsViewModelFactory(ContactRepository(AppDatabase.getDatabase(this)))
+        )[ContactViewModel::class.java]
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -105,6 +119,23 @@ class MainActivity : AppCompatActivity() {
             return false
         }
         menuInflater.inflate(R.menu.menu_toolbar, menu)
+
+        val searchItem = menu.findItem(R.id.search_bar)
+        searchView = searchItem.actionView as SearchView
+
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                contactViewModel.setSearchQuery(newText ?: "")
+                return true
+            }
+        })
+//        searchView?.setOnQueryTextListener {
+//            contactViewModel.setSearchQuery(it?.toString() ?: "")
+//        }
         return true
     }
 
@@ -123,9 +154,9 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-        // viewmodel access with factory
-        // create UI and bind the data with data binding
-        // fragment navigation
-        // drawer changes(probably recycler view withing the NavigationView to customize)
-        // image picker logic
-        // search/filter in contacts
+        // viewmodel access with factory -- done
+        // create UI and bind the data with data binding -- done
+        // fragment navigation -- partial done
+        // drawer changes(probably recycler view withing the NavigationView to customize) --done
+        // image picker logic -- done
+        // search/filter in contact -- search done, filter pending

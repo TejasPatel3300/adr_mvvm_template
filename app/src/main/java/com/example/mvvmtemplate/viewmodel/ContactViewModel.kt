@@ -1,6 +1,7 @@
 package com.example.mvvmtemplate.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,8 +18,14 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
         get() = _validationState
 
     private val _contacts: LiveData<List<Contact>> = repository.getContacts()
-    val contacts: LiveData<List<Contact>>
-        get() = _contacts
+
+    private val _visibleToUserContacts = MediatorLiveData<List<Contact>>().apply {
+        addSource(_contacts) { contacts ->
+            value = contacts
+        }
+    }
+    val visibleContacts: LiveData<List<Contact>>
+        get() = _visibleToUserContacts
 
     fun insertContact(contact: Contact) {
         val isValid = validate(contact)
@@ -30,6 +37,20 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
         resetValidationState()
     }
 
+    fun setSearchQuery(query: String) {
+        if (query.trim().isEmpty()) {
+            _visibleToUserContacts.value = _contacts.value
+            return
+        }
+
+        val allContacts = _contacts.value ?: emptyList()
+        val filteredList = allContacts.filter {
+            it.firstName.contains(query, ignoreCase = true) || it.lastName.contains(query, ignoreCase = true)
+        }
+
+        _visibleToUserContacts.value = filteredList
+    }
+
     fun updateContact(contact: Contact) {
         val isValid = validate(contact)
         if (isValid) {
@@ -37,6 +58,7 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
                 repository.updateContact(contact)
             }
         }
+        resetValidationState()
     }
 
     fun deleteContact(contact: Contact) {

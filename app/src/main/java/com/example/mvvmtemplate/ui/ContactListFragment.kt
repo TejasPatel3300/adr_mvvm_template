@@ -76,7 +76,7 @@ class ContactListFragment : Fragment() {
     }
 
     private fun initializeData() {
-        contactViewModel.contacts.observe(viewLifecycleOwner) {contacts ->
+        contactViewModel.visibleContacts.observe(viewLifecycleOwner) { contacts ->
             contactListAdapter?.updateData(contacts)
         }
     }
