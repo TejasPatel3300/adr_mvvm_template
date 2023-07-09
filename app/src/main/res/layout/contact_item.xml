@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@{contact.firstName + contact.lastName}"
+            android:text="@{contact.firstName +` `+ contact.lastName}"
             app:layout_constraintBottom_toBottomOf="@+id/ivProfilePicture"
             app:layout_constraintEnd_toStartOf="@+id/ivEdit"
             app:layout_constraintHorizontal_bias="0.0"

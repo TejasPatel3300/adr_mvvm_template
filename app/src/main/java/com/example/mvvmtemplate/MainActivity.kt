@@ -1,7 +1,6 @@
 package com.example.mvvmtemplate
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private var drawerMenu: RecyclerView? = null
     private var drawerAdapter: DrawerAdapter? = null
 
+    private var hideMenu: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -64,22 +64,8 @@ class MainActivity : AppCompatActivity() {
                 hideKeyboard(this)
                 drawerLayout?.open()
             }
-            it.topAppBar.setOnCreateContextMenuListener { menu, v, menuInfo ->
-                Log.d("menu", "setOnCreateContextMenuListener")
-            }
-
-//            it.topAppBar.setOnMenuItemClickListener {menuItem ->
-//                when (menuItem.itemId) {
-//                    R.id.filter ->{
-//                        true
-//                    }
-//                    R.id.search_bar -> {
-//                        true
-//                    }
-//
-//                    else -> false
-//                }
-//
+//            it.topAppBar.setOnCreateContextMenuListener { menu, v, menuInfo ->
+//                Log.d("menu", "setOnCreateContextMenuListener")
 //            }
             drawerMenu?.apply {
                 adapter = drawerAdapter
@@ -96,32 +82,42 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction()
                     .replace(fragmentContainer.id, fragment, null)
                     .commit()
+
+                toggleMenuVisibility(fragment)
             }
         }
         drawerLayout?.close()
     }
 
+    private fun toggleMenuVisibility(fragment: Fragment) {
+        if (fragment is ContactListFragment) {
+            hideMenu = false
+            invalidateOptionsMenu()
+        } else {
+            hideMenu = true
+            invalidateOptionsMenu()
+        }
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        if (hideMenu) {
+            return false
+        }
         menuInflater.inflate(R.menu.menu_toolbar, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.filter -> {
-            // User chose the "Settings" item, show the app settings UI...
             true
         }
 
         R.id.search_bar -> {
-            // User chose the "Favorite" action, mark the current item
-            // as a favorite...
             true
         }
 
         else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
     }

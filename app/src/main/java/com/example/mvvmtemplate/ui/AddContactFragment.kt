@@ -72,7 +72,7 @@ class AddContactFragment : Fragment() {
         if (uri != null) {
             Log.d("PhotoPicker", "Selected URI: $uri")
             profilePicUri = uri
-            ivProfile?.let { Glide.with(this).load(uri).circleCrop().into(it) }
+            ivProfile?.let { Glide.with(this).load(profilePicUri).circleCrop().into(it) }
         } else {
             Log.d("PhotoPicker", "No media selected")
         }
@@ -142,8 +142,9 @@ class AddContactFragment : Fragment() {
             when (validationState) {
                 ContactViewModel.ValidationState.INITIAL -> {}
                 ContactViewModel.ValidationState.VALID -> {
-
-                }ContactViewModel.ValidationState.INVALID_PROFILE_PIC -> Toast.makeText(requireContext(), resources.getString(R.string.invalid_profile_picture), Toast.LENGTH_LONG).show()
+                    resetFields()
+                }
+                ContactViewModel.ValidationState.INVALID_PROFILE_PIC -> Toast.makeText(requireContext(), resources.getString(R.string.invalid_profile_picture), Toast.LENGTH_LONG).show()
                 ContactViewModel.ValidationState.INVALID_FIRST_NAME -> Toast.makeText(requireContext(), resources.getString(R.string.invalid_first_name), Toast.LENGTH_LONG).show()
                 ContactViewModel.ValidationState.INVALID_LAST_NAME -> Toast.makeText(requireContext(), resources.getString(R.string.invalid_last_name), Toast.LENGTH_LONG).show()
                 ContactViewModel.ValidationState.INVALID_EMAIL -> Toast.makeText(requireContext(), resources.getString(R.string.invalid_email), Toast.LENGTH_LONG).show()
@@ -209,5 +210,16 @@ class AddContactFragment : Fragment() {
             contactViewModel.insertContact(contact)
         }
         hideKeyboard(requireActivity())
+    }
+
+    private fun resetFields() {
+        etFirstName?.text?.clear()
+        etMobileNumber?.text?.clear()
+        etLastName?.text?.clear()
+        etEmail?.text?.clear()
+        autoTvCategories?.text?.clear()
+        profilePicUri = null
+        selectedCategory = null
+        ivProfile?.setImageResource(R.drawable.profile)
     }
 }

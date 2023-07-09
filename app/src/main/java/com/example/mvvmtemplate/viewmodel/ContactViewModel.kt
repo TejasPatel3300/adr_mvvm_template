@@ -27,6 +27,7 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
                 repository.insertContact(contact)
             }
         }
+        resetValidationState()
     }
 
     fun updateContact(contact: Contact) {
@@ -44,12 +45,6 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
         }
     }
 
-    fun getContacts() {
-        viewModelScope.launch {
-            repository.getContacts()
-        }
-    }
-
     private fun validate(contact: Contact): Boolean {
         val firstName = contact.firstName
         val lastName = contact.lastName
@@ -58,7 +53,7 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
         val category = contact.category
         val profilePicUri = contact.profilePicUri
 
-        var isValid = true
+        val isValid: Boolean
 
         if (firstName.isEmpty()) {
             _validationState.value = ValidationState.INVALID_FIRST_NAME
@@ -87,7 +82,7 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
 
     }
 
-    fun resetValidationState() {
+    private fun resetValidationState() {
         _validationState.value = ValidationState.INITIAL
     }
 
